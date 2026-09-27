@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贪吃蛇 · 含 AI 自动模式</title>
+<style>
+/* ===== 主题配色：浅色 / 深色两套，用 data-theme 切换 ===== */
+:root{
+  --bg:#f4f6fb;
+  --panel:#ffffff;
+  --text:#1f2328;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --board-bg:#eef2f9;
+  --grid:#dde5f2;
+  --snake:#2f9e68;
+  --snake-head:#1f7a4d;
+  --food:#e5484d;
+  --accent:#2f6feb;
+  --shadow:0 8px 30px rgba(15,23,42,.10);
+}
+[data-theme="dark"]{
+  --bg:#0f1420;
+  --panel:#161c2b;
+  --text:#e8ecf4;
+  --muted:#93a0b8;
+  --border:#26304a;
+  --board-bg:#101728;
+  --grid:#1b2439;
+  --snake:#3ddc84;
+  --snake-head:#23b366;
+  --food:#ff5d63;
+  --accent:#5b8cff;
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0; min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg); color:var(--text);
+  font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+  transition:background .25s,color .25s;
+}
+
+.app{
+  width:min(92vw,470px);
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:18px 18px 16px;
+}
+
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.top h1{font-size:19px;margin:0;letter-spacing:1px;}
+
+button{
+  font-family:inherit; font-size:13px; cursor:pointer;
+  color:var(--text); background:var(--panel);
+  border:1px solid var(--border); border-radius:10px;
+  padding:7px 12px; transition:.18s;
+}
+button:hover{border-color:var(--accent);color:var(--accent);}
+button.primary{
+  background:var(--accent); color:#fff; border-color:transparent; font-weight:600;
+}
+button.primary:hover{opacity:.9;color:#fff;}
+
+/* 状态栏：得分 / 最高分 / 局数 / AI 连吃 */
+.hud{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:12px;
+}
+.stat{
+  background:var(--board-bg); border:1px solid var(--border);
+  border-radius:10px; padding:7px 8px; text-align:center;
+}
+.stat span{display:block;font-size:11px;color:var(--muted);}
+.stat b{font-size:16px;}
+
+canvas{
+  width:100%; height:auto; display:block;
+  background:var(--board-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+
+.row{display:flex;gap:8px;margin-top:12px;}
+.row button{flex:1;}
+
+.tip{
+  margin:10px 0 0; text-align:center;
+  font-size:12px; color:var(--muted); line-height:1.7;
+}
+.badge{
+  display:inline-block; margin-top:6px; padding:3px 10px; border-radius:999px;
+  background:rgba(47,158,104,.14); color:var(--snake-head);
+  font-size:12px; font-weight:600;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <h1>🐍 贪吃蛇</h1>
+    <button id="themeBtn">🌙 深色</button>
+  </div>
+
+  <div class="hud">
+    <div class="stat"><span>得分</span><b id="score">0</b></div>
+    <div class="stat"><span>最高分</span><b id="best">0</b></div>
+    <div class="stat"><span>局数</span><b id="rounds">0</b></div>
+    <div class="stat"><span>AI 连吃</span><b id="aiStreak">0/15</b></div>
+  </div>
+
+  <canvas id="board" width="480" height="480"></canvas>
+
+  <div class="row">
+    <button id="aiBtn" class="primary">▶ 开启 AI 自动模式</button>
+  </div>
+  <div class="row">
+    <button id="restartBtn">重新开始本局</button>
+    <button id="resetBtn">重置全部记录</button>
+  </div>
+
+  <p class="tip">
+    方向键 / WASD 控制方向，空格暂停<br>
+    <span class="badge">考核指标：AI 连续吃满 15 个食物不死</span>
+  </p>
+
+</div>
+
+<script>
+/* =========================================================
+   贪吃蛇 + AI 自动寻路
+   ---------------------------------------------------------
+   棋盘：20 × 20 格，每格 24 像素
+   手动模式：方向键 / WASD
+   AI 模式：BFS 找最短路径 + 安全检查，见下方 aiDecide() 注释
+   ========================================================= */
+
+const COLS = 20;              // 横向格子数
+const ROWS = 20;              // 纵向格子数
+const CELL = 24;              // 每格像素
+const WIN_STREAK = 15;        // 考核指标：AI 连吃 15 个
+
+const canvas = document.getElementById('board');
+const ctx = canvas.getContext('2d');
+
+const $score    = document.getElementById('score');
+const $best     = document.getElementById('best');
+const $rounds   = document.getElementById('rounds');
+const $aiStreak = document.getElementById('aiStreak');
+const $aiBtn    = document.getElementById('aiBtn');
+
+/* ---------- 游戏状态 ---------- */
+let snake, dir, nextDir, food, score, alive, paused;
+let aiMode = false;        // 是否处于 AI 自动模式
+let aiStreak = 0;          // AI 连续吃到的食物数（撞死或被手动打断则清零）
+let aiBestStreak = 0;
+let speed = 130;           // 每步毫秒数，会随分数加快
+let timer = null;
+
+let best  = Number(localStorage.getItem('snake.best')   || 0);   // 最高分
+let rounds = Number(localStorage.getItem('snake.rounds') || 0);  // 累计局数
+
+/* ---------- 初始化一局 ---------- */
+function newGame(){
+  snake = [{x:9,y:10},{x:8,y:10},{x:7,y:10}];  // 蛇头在最前面
+  dir = {x:1,y:0};
+  nextDir = {x:1,y:0};
+  score = 0;
+  alive = true;
+  paused = false;
+  speed = 130;
+  aiStreak = 0;
+  placeFood();
+  updateHud();
+  restartTimer();
+  draw();
+}
+
+/* ---------- 在空格里随机放一个食物 ---------- */
+function placeFood(){
+  const empty = [];
+  for(let y=0;y<ROWS;y++){
+    for(let x=0;x<COLS;x++){
+      if(!snake.some(s=>s.x===x && s.y===y)) empty.push({x,y});
+    }
+  }
+  food = empty[Math.floor(Math.random()*empty.length)] || null;
+}
+
+/* ---------- 主循环 ---------- */
+function restartTimer(){
+  clearInterval(timer);
+  timer = setInterval(step, speed);
+}
+
+function step(){
+  if(!alive || paused) return;
+  if(aiMode) aiDecide();       // AI 模式下先算方向
+  move();
+  draw();
+}
+
+/* ---------- 走一步 ---------- */
+function move(){
+  dir = nextDir;
+  const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+
+  // 撞墙
+  if(head.x<0 || head.y<0 || head.x>=COLS || head.y>=ROWS) return gameOver();
+
+  const willEat = food && head.x===food.x && head.y===food.y;
+
+  // 撞自己：没吃到食物时，尾巴那格会空出来，所以不算撞
+  const body = willEat ? snake : snake.slice(0, -1);
+  if(body.some(s=>s.x===head.x && s.y===head.y)) return gameOver();
+
+  snake.unshift(head);
+  if(willEat){
+    score += 10;
+    if(aiMode){ aiStreak++; aiBestStreak = Math.max(aiBestStreak, aiStreak); }
+    placeFood();
+    // 越吃越快，但有下限
+    const newSpeed = Math.max(70, 130 - Math.floor(score/50)*8);
+    if(newSpeed !== speed){ speed = newSpeed; restartTimer(); }
+  }else{
+    snake.pop();
+  }
+  updateHud();
+}
+
+function gameOver(){
+  alive = false;
+  clearInterval(timer);
+  rounds++;
+  localStorage.setItem('snake.rounds', rounds);
+  if(score > best){ best = score; localStorage.setItem('snake.best', best); }
+  aiStreak = 0;                       // 这一局断了，AI 连吃清零
+  updateHud();
+  draw();
+}
+
+/* =========================================================
+   AI 决策（阶段二的硬指标靠这段代码实现）
+   思路分三步：
+   1) 用 BFS 从蛇头找一条到食物的最短路径（步数最少）
+   2) 走之前先"模拟走一步"，判断走完会不会把自己困死：
+      - 蛇头还能不能走到蛇尾（能走到说明没被围成死圈）
+      - 从蛇头出发能走到的空格数，够不够放下整条蛇
+   3) 安全就走最短路径；不安全就不追食物，改成跟着尾巴走，
+      等空间变大再追食物
+   ========================================================= */
+function aiDecide(){
+  const head = snake[0];
+  const dirs = [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}]
+    .filter(d => !(d.x === -dir.x && d.y === -dir.y));   // 不允许 180 度掉头
+
+  // 先算出"打算走的方向"：能追食物就追食物，否则追尾巴
+  let goal = food;
+  let path = bfsPath(head, goal);
+  if(!path){ goal = snake[snake.length-1]; path = bfsPath(head, goal); }
+
+  const preferred = [];
+  if(path && path.length > 1){
+    const first = path[1];
+    preferred.push({x:first.x-head.x, y:first.y-head.y});
+  }
+  dirs.forEach(d=>{
+    if(!preferred.some(p=>p.x===d.x && p.y===d.y)) preferred.push(d);
+  });
+
+  // 在候选方向里挑第一个"安全"的
+  let chosen = null;
+  for(const d of preferred){
+    const sim = simulate(head, d);
+    if(!sim) continue;                                  // 这一步会撞墙/撞自己
+    const space = reachableSpace(sim.body, sim.head);    // 走完后能活动的空格数
+    const tailOK = reachableTail(sim.body, sim.head);    // 走完后蛇头还能追到蛇尾
+    if(tailOK && space >= sim.body.length){ chosen = d; break; }
+  }
+
+  // 都不安全时：退而求其次，选活动空间最大的那一步
+  if(!chosen){
+    let bestSpace = -1;
+    for(const d of preferred){
+      const sim = simulate(head, d);
+      if(!sim) continue;
+      const space = reachableSpace(sim.body, sim.head);
+      if(space > bestSpace){ bestSpace = space; chosen = d; }
+    }
+  }
+
+  if(chosen) nextDir = chosen;
+}
+
+/* 模拟从 head 往 d 方向走一步后的局面 */
+function simulate(head, d){
+  const nh = {x: head.x + d.x, y: head.y + d.y};
+  if(nh.x<0 || nh.y<0 || nh.x>=COLS || nh.y>=ROWS) return null;
+
+  const willEat = food && nh.x===food.x && nh.y===food.y;
+  const body = willEat ? snake.slice() : snake.slice(0, -1);
+  if(body.some(s=>s.x===nh.x && s.y===nh.y)) return null;
+
+  return { head: nh, body: [nh, ...body] };
+}
+
+/* BFS：从 from 到 to 的最短路径（返回包含起点和终点的格子数组） */
+function bfsPath(from, to){
+  if(!to) return null;
+  const blocked = new Set(snake.slice(0, -1).map(s=>s.x+','+s.y)); // 蛇尾当成可通行
+  const queue = [from];
+  const prev = new Map([[from.x+','+from.y, null]]);
+
+  while(queue.length){
+    const cur = queue.shift();
+    if(cur.x===to.x && cur.y===to.y){
+      const path = [];
+      let k = cur.x+','+cur.y;
+      while(k){ path.push({x:+k.split(',')[0], y:+k.split(',')[1]}); k = prev.get(k); }
+      return path.reverse();
+    }
+    for(const d of [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}]){
+      const nx = cur.x+d.x, ny = cur.y+d.y, key = nx+','+ny;
+      if(nx<0||ny<0||nx>=COLS||ny>=ROWS) continue;
+      if(blocked.has(key) || prev.has(key)) continue;
+      prev.set(key, cur.x+','+cur.y);
+      queue.push({x:nx,y:ny});
+    }
+  }
+  return null;
+}
+
+/* 从蛇头出发，能走到的空格数量（衡量"还有多少地方可活动"） */
+function reachableSpace(body, head){
+  const occupied = new Set(body.slice(0, -1).map(s=>s.x+','+s.y));
+  const seen = new Set([head.x+','+head.y]);
+  const queue = [head];
+  let count = 0;
+  while(queue.length){
+    const cur = queue.shift();
+    for(const d of [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}]){
+      const nx = cur.x+d.x, ny = cur.y+d.y, key = nx+','+ny;
+      if(nx<0||ny<0||nx>=COLS||ny>=ROWS) continue;
+      if(occupied.has(key) || seen.has(key)) continue;
+      seen.add(key); count++; queue.push({x:nx,y:ny});
+    }
+  }
+  return count;
+}
+
+/* 从蛇头能不能走到蛇尾（能走到 = 没把自己围成死圈） */
+function reachableTail(body, head){
+  const tail = body[body.length-1];
+  const occupied = new Set(body.slice(0, -1).map(s=>s.x+','+s.y));
+  const seen = new Set([head.x+','+head.y]);
+  const queue = [head];
+  while(queue.length){
+    const cur = queue.shift();
+    if(cur.x===tail.x && cur.y===tail.y) return true;
+    for(const d of [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}]){
+      const nx = cur.x+d.x, ny = cur.y+d.y, key = nx+','+ny;
+      if(nx<0||ny<0||nx>=COLS||ny>=ROWS) continue;
+      if(occupied.has(key) || seen.has(key)) continue;
+      seen.add(key); queue.push({x:nx,y:ny});
+    }
+  }
+  return false;
+}
+
+/* ---------- 画面 ---------- */
+function draw(){
+  const style = getComputedStyle(document.documentElement);
+  const cGrid = style.getPropertyValue('--grid').trim();
+  const cSnake = style.getPropertyValue('--snake').trim();
+  const cHead = style.getPropertyValue('--snake-head').trim();
+  const cFood = style.getPropertyValue('--food').trim();
+  const cText = style.getPropertyValue('--text').trim();
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // 网格
+  ctx.strokeStyle = cGrid; ctx.lineWidth = 1;
+  for(let i=1;i<COLS;i++){
+    ctx.beginPath(); ctx.moveTo(i*CELL,0); ctx.lineTo(i*CELL,ROWS*CELL); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,i*CELL); ctx.lineTo(COLS*CELL,i*CELL); ctx.stroke();
+  }
+
+  // 食物（画成圆形）
+  if(food){
+    ctx.fillStyle = cFood;
+    ctx.beginPath();
+    ctx.arc(food.x*CELL+CELL/2, food.y*CELL+CELL/2, CELL*0.32, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // 蛇身
+  snake.forEach((s,i)=>{
+    ctx.fillStyle = i===0 ? cHead : cSnake;
+    roundRect(s.x*CELL+2, s.y*CELL+2, CELL-4, CELL-4, 6);
+  });
+
+  // 结束文字
+  if(!alive){
+    ctx.fillStyle = 'rgba(0,0,0,.45)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 30px "Microsoft YaHei",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('游戏结束', canvas.width/2, canvas.height/2 - 8);
+    ctx.font = '16px "Microsoft YaHei",sans-serif';
+    ctx.fillText('得分 ' + score + ' · 点「重新开始本局」再来一次', canvas.width/2, canvas.height/2 + 24);
+  }
+
+  // 暂停提示
+  if(paused && alive){
+    ctx.fillStyle = 'rgba(0,0,0,.35)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 24px "Microsoft YaHei",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('已暂停', canvas.width/2, canvas.height/2);
+  }
+}
+
+function roundRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function updateHud(){
+  $score.textContent = score;
+  $best.textContent = best;
+  $rounds.textContent = rounds;
+  $aiStreak.textContent = aiStreak + '/' + WIN_STREAK;
+}
+
+/* ---------- 键盘控制 ---------- */
+const keyMap = {
+  ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0},
+  w:{x:0,y:-1}, s:{x:0,y:1}, a:{x:-1,y:0}, d:{x:1,y:0},
+  W:{x:0,y:-1}, S:{x:0,y:1}, A:{x:-1,y:0}, D:{x:1,y:0}
+};
+
+document.addEventListener('keydown', e=>{
+  if(e.key === ' '){                       // 空格暂停 / 继续
+    e.preventDefault();
+    paused = !paused;
+    draw();
+    return;
+  }
+  const d = keyMap[e.key];
+  if(!d) return;
+  e.preventDefault();
+  if(aiMode) return;                       // AI 模式下忽略手动方向
+  if(d.x === -dir.x && d.y === -dir.y) return;  // 不允许反向
+  nextDir = d;
+});
+
+/* ---------- 按钮 ---------- */
+$aiBtn.addEventListener('click', ()=>{
+  aiMode = !aiMode;
+  aiStreak = 0;                            // 每次切换都重新开始计数
+  $aiBtn.textContent = aiMode ? '⏸ 关闭 AI（改回手动）' : '▶ 开启 AI 自动模式';
+  $aiBtn.classList.toggle('primary', !aiMode);
+  if(!alive) newGame();
+  updateHud();
+});
+
+document.getElementById('restartBtn').addEventListener('click', newGame);
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  best = 0; rounds = 0; aiBestStreak = 0;
+  localStorage.removeItem('snake.best');
+  localStorage.removeItem('snake.rounds');
+  newGame();
+});
+
+/* ---------- 主题切换（新增功能：刷新后记住选择） ---------- */
+const $themeBtn = document.getElementById('themeBtn');
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  $themeBtn.textContent = t === 'dark' ? '☀️ 浅色' : '🌙 深色';
+  localStorage.setItem('snake.theme', t);   // 关键：存下来，刷新后还能记住
+  draw();
+}
+
+$themeBtn.addEventListener('click', ()=>{
+  const now = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(now);
+});
+
+/* ---------- 启动 ---------- */
+applyTheme(localStorage.getItem('snake.theme') || 'light');
+newGame();
+</script>
+</body>
+</html>
