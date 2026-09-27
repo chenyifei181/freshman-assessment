@@ -1,6 +1,8 @@
 # 大一招新考核作品集
 
-作者：陈逸飞（GitHub：[@chenyifei181](https://github.com/chenyifei181)）
+作者：陈一菲 · 广东工业大学 集成电路设计与集成系统创新班（GitHub：[@chenyifei181](https://github.com/chenyifei181)）
+
+目标方向：数字 IC · 芯片验证
 
 ## 一、这个仓库里有什么
 
@@ -9,7 +11,7 @@
 | 个人网站 | `index.html`、`style.css` | 手写 HTML / CSS，托管在 GitHub Pages |
 | 贪吃蛇小游戏 | `snake.html` | 单文件实现，含 AI 自动模式（阶段一 + 阶段二） |
 | PySpice 电路仿真 | `circuit_rc.py`、`circuit_thevenin.py`、`circuit_mos.py` | RC 滤波、戴维南定理、NMOS 共源放大 |
-| 个人简介 PDF | `个人简介.pdf` | 姓名、专业、兴趣、联系方式 |
+| 个人简介 PDF | `个人简介.pdf` | 姓名、专业、兴趣、联系方式（源文件 `resume.html`，用浏览器打印成 PDF） |
 | 许可证 | `LICENSE` | MIT |
 
 ## 二、网站地址
@@ -32,8 +34,9 @@
 - [x] 环境准备（GitHub 账号、Git、GitHub Desktop）
 - [x] 创建仓库并完成首次提交
 - [x] 个人网站上线
-- [ ] 个人简介 PDF
-- [ ] LICENSE + 两步验证
+- [ ] 个人简介 PDF（用 `resume.html` 打印）
+- [x] LICENSE
+- [ ] 两步验证（2FA）
 - [x] 小游戏阶段一（能自己玩）
 - [x] 小游戏阶段二（AI 自动吃满 15 个）
 - [ ] PySpice 三个电路

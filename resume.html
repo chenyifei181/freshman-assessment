@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陈一菲 · 个人简介</title>
+<style>
+  @page { size: A4; margin: 13mm; }
+  :root{
+    --ink:#1f2328;
+    --muted:#6b7280;
+    --accent:#2f6feb;
+    --line:#e5e7eb;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:26px 16px; background:#f1f3f8; color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif; line-height:1.78;
+  }
+  .paper{
+    width:210mm; margin:0 auto; background:#fff;
+    padding:16mm 15mm; box-shadow:0 10px 40px rgba(15,23,42,.12);
+  }
+  header{border-bottom:2px solid var(--accent); padding-bottom:12px; margin-bottom:18px;}
+  h1{margin:0 0 6px; font-size:25px; letter-spacing:2px;}
+  .sub{color:var(--accent); font-size:13.5px; font-weight:600;}
+  .meta{margin-top:8px; font-size:12.5px; color:var(--muted);}
+  .meta span{margin-right:16px; white-space:nowrap;}
+  section{margin-bottom:18px;}
+  h2{
+    font-size:15px; margin:0 0 9px; padding-left:10px;
+    border-left:4px solid var(--accent); line-height:1.4;
+  }
+  p{margin:0 0 9px; font-size:13.5px;}
+  ul{margin:0; padding-left:20px; font-size:13.5px;}
+  li{margin-bottom:5px;}
+  .chips{margin:0; padding:0;}
+  .chips li{
+    display:inline-block; list-style:none; margin:0 8px 8px 0; padding:3px 12px;
+    border-radius:999px; background:#eaf1fe; color:#1d4ed8; font-size:12.5px;
+  }
+  table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  th,td{border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top;}
+  th{background:#f7f9fc; font-weight:600;}
+  .quote{
+    margin:0 0 10px; padding:10px 14px; border-radius:8px;
+    background:#f7f9fc; border-left:3px solid var(--accent);
+    font-size:13.5px; color:#334155;
+  }
+  .foot{margin-top:20px; padding-top:10px; border-top:1px solid var(--line); color:var(--muted); font-size:11.5px;}
+  .hint{
+    width:210mm; margin:0 auto 12px; padding:10px 14px; border-radius:10px;
+    background:#fff7e6; border:1px solid #ffe0a3; color:#8a5b00; font-size:13px;
+  }
+  @media print{
+    body{background:#fff; padding:0;}
+    .paper{box-shadow:none; width:auto; padding:0; margin:0;}
+    .hint{display:none;}
+    /* 打印排版优化：标题不单独留在页脚，列表和表格不跨页断开 */
+    h2{break-after:avoid; page-break-after:avoid;}
+    ul,table,.quote{break-inside:avoid; page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hint">
+  📄 打印方法：按 <b>Ctrl + P</b> → 打印机选「<b>另存为 PDF</b>」→ 点保存。
+</div>
+
+<div class="paper">
+
+  <header>
+    <h1>陈一菲</h1>
+    <div class="sub">广东工业大学 · 集成电路设计与集成系统创新班 · 想往数字 IC 的芯片验证方向走</div>
+    <div class="meta">
+      <span>📍 广东湛江</span>
+      <span>📧 3227669497@qq.com</span>
+      <span>🐙 github.com/chenyifei181</span>
+      <span>🌐 chenyifei181.github.io/freshman-assessment</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>先说说我是个什么样的人</h2>
+    <p>
+      我叫陈一菲，来自广东湛江，现在在广东工业大学读<strong>集成电路设计与集成系统创新班</strong>，大一。
+      如果只能用一个特点介绍自己，我想说：<strong>我是一个对"发现问题"上瘾的人。</strong>
+    </p>
+    <p>
+      别人做实验做到"能跑通"就收工了，我总忍不住再回头多看两遍。不是不放心，而是真的觉得——
+      在所有人以为"这没问题"的地方找出一处漏洞、一个藏得很深的 bug，是一件特别让人兴奋的事。
+      也正因为这个性格，我对数字 IC 里的<strong>芯片验证</strong>格外感兴趣：验证的本质，就是在设计被大家认为"应该没问题"的时候，
+      尽量把那些意外情况提前找出来。这和我这个人太合拍了。
+    </p>
+    <p>
+      我比较耐心、细心，也沉得下心——能安安静静地对着一个问题和它死磕到底；
+      同时我很外向、开朗活泼，喜欢和人打交道，团队里有事我很少等着别人先开口。
+      抗压能力还不错，心态也比较稳，不会因为一时做不出来就急。交给我的事我会负责到底，
+      而且总想把它做到最好。
+    </p>
+  </section>
+
+  <section>
+    <h2>为什么想往芯片验证走</h2>
+    <div class="quote">
+      我享受的不是"造出东西"的那一下，而是"把可能出错的地方一个个试出来"的过程。
+    </div>
+    <p>
+      我读的本来就是集成电路设计与集成系统，走数字 IC 这条路对我来说是顺理成章的；
+      而在这条路上，最吸引我的就是验证。
+      这次考核里我做小游戏的时候，最花时间的不是写功能，而是想办法让 AI 不会把自己困死：
+      我先想清楚"它在什么情况下会死"，再一条条加上检查（能不能回到尾巴、剩余空间够不够）。
+      那种"我提前想到了别人没想到的情况"的感觉，和我想做验证的冲动是同一件事。
+      我还没系统学过验证的课程，但我有耐心、愿意钻，也清楚自己想往哪个方向走。
+    </p>
+    <p>
+      还有一点跟验证很搭：验证要写测试用例和验证报告，而我一直挺能写——
+      高三时拿过校级征文比赛一等奖，平时也爱写随笔。把事情讲清楚，我不怕。
+    </p>
+    <p>
+      英语我也不太担心：高考英语 135+。IC 这行的工具手册、spec 和资料大多是英文写的，
+      能直接读原文，对我来说是件省事的事。
+    </p>
+  </section>
+
+  <section>
+    <h2>接下来我想学的</h2>
+    <ul>
+      <li><strong>SystemVerilog</strong>：验证要靠它写测试平台，这是我下一步最想拿下的东西。</li>
+      <li><strong>验证方法学（UVM）</strong>：等语法和数字电路学扎实了，我想往这个方向系统学。</li>
+      <li><strong>Python 脚本</strong>：跑回归、批量整理仿真结果都得靠它，我现在已经在慢慢用。</li>
+      <li><strong>Linux 常用操作</strong>：仿真和 EDA 工具大多在 Linux 下跑，这部分我也在熟悉。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>生活里的我</h2>
+    <ul>
+      <li><strong>家乡湛江</strong>：一座靠海的城市，海鲜和糖水都是招牌。假期回家，吃这件事一定排在前面。</li>
+      <li><strong>羽毛球与田径</strong>：羽毛球是每周的固定项目；高中在校运会上跳高拿过第二名，
+        也跑过 4×100 米接力。喜欢那种拼反应、拼体力，还要和队友配合上的痛快感。</li>
+      <li><strong>书法</strong>：练字的时候心会静下来，有点像调电路时的状态——急不得，一笔一笔来。</li>
+      <li><strong>看书 / 写随笔</strong>：看完总想写点什么，备忘录里攒了不少碎碎念，算是我自己的思考存档。</li>
+      <li><strong>旅游和美食</strong>：到一座城市先找当地小吃，边吃边拍照记录。喜欢热闹的烟火气，也喜欢认识不同的人。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>技能</h2>
+    <ul class="chips">
+      <li>C 语言</li>
+      <li>HTML / CSS</li>
+      <li>JavaScript（入门）</li>
+      <li>Git / GitHub</li>
+      <li>PySpice / ngspice 电路仿真</li>
+      <li>AI 辅助编程与提示词设计</li>
+      <li>英语（高考 135+，能直接读英文技术文档）</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>成绩与荣誉</h2>
+    <ul>
+      <li>
+        <strong>高考成绩</strong>：英语 135+；高中阶段曾考进年级前二十名；语文成绩一直比较好。
+      </li>
+      <li>
+        <strong>学业</strong>：连续多年获评「学习之星 / 学习标兵 / 三好学生」——
+        初三年级优秀学生（2022.10）、高一学习之星（2023.10、2023.12）、
+        高二学习之星（2024.04）、高二三好学生（2024.05）、
+        高二学习标兵（2024.11、2025.06）、高三学习标兵（2026.03、2026.05）。
+      </li>
+      <li>
+        <strong>体育</strong>：校田径运动会跳高第二名（2020.11、2024.11）、
+        跳远第五名（2021.11）、4×100 米接力第三名（2024.11）。
+      </li>
+      <li>
+        <strong>文艺与写作</strong>：「学雷锋，树新风」征文比赛一等奖（2025.03）、
+        英语歌唱比赛（2021.05）。
+      </li>
+    </ul>
+    <p style="font-size:12px;color:var(--muted);margin-top:6px;">以上荣誉均获自廉江市实验学校。</p>
+  </section>
+
+  <section>
+    <h2>学生工作</h2>
+    <ul>
+      <li><strong>现在</strong>：大学班级团支书（2026.09 入学至今）</li>
+      <li><strong>曾任</strong>：班长</li>
+      <li><strong>高中</strong>：英语课代表</li>
+    </ul>
+    <p>
+      当团支书要负责通知、协调同学、写材料，班里的事情我一般会跟到底。
+      这些事确实占时间，但也让我习惯了同时扛几件事、并且按时交付。
+    </p>
+  </section>
+
+  <section>
+    <h2>这次考核我做出来的东西</h2>
+    <table>
+      <tr><th style="width:30%">作品</th><th>说明</th></tr>
+      <tr>
+        <td>个人网站</td>
+        <td>手写 HTML / CSS，部署在 GitHub Pages：chenyifei181.github.io/freshman-assessment</td>
+      </tr>
+      <tr>
+        <td>贪吃蛇小游戏</td>
+        <td>纯前端单文件，能自己玩；另加 AI 自动模式（BFS 寻路 + 安全检查）。
+          实测 AI 最高连续吃满 <strong>71 个</strong>食物不死，指标是 15 个。还加了主题切换功能。</td>
+      </tr>
+      <tr>
+        <td>PySpice 电路仿真</td>
+        <td>RC 低通滤波、戴维南定理验证、NMOS 共源放大电路。每个电路都给了自己画的电路图、
+          完整手算过程、仿真波形，以及「手算 vs 仿真」对比表。</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>我是怎么做这些作品的</h2>
+    <ul>
+      <li>用 Git 管理版本，全部作品提交在自己的 GitHub 仓库里，能看出是一步步改出来的</li>
+      <li>用 AI 编程工具生成初版，但每一段关键逻辑我都自己核对过、改过（提示词和迭代过程都记在 README 里）</li>
+      <li>电路部分坚持先手算一遍公式，再拿仿真结果对照，对不上就回头找原因</li>
+      <li>
+        举个能说明我这人习惯的例子：AI 曾经很确定地告诉我，<code>git checkout -- .</code> 可以"安全地撤销改动"。
+        我去查了 Git 官方文档，又在一个测试文件夹里亲手试了一次——结果是它会直接把未提交的修改丢掉，而且找不回来。
+        这条「AI 说错了、我自己查证纠正」的完整过程我写进了 README。对我来说，查证的过程比结论更重要。
+      </li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    个人主页：chenyifei181.github.io/freshman-assessment ｜ 代码仓库：github.com/chenyifei181/freshman-assessment
+  </div>
+
+</div>
+
+</body>
+</html>
