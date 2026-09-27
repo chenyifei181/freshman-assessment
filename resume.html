@@ -21,7 +21,6 @@
     font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif; line-height:1.78;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
   }
-  /* 圆润一点的字体：有幼圆就用幼圆，没有就退回雅黑 */
   h1,h2,.sub{font-family:"幼圆","YouYuan","Yuanti SC","Microsoft YaHei",sans-serif;}
 
   .paper{
@@ -30,38 +29,25 @@
     box-shadow:0 10px 40px rgba(15,23,42,.10);
   }
 
-  /* 线条小狗等图案 */
-  .sprite{position:absolute; width:0; height:0; overflow:hidden;}
-  .ico{display:inline-block; vertical-align:-0.16em; color:var(--accent);}
-  .ico.paw{width:1.05em; height:1.05em; margin-right:.4em;}
-  .ico.bone{width:1.1em; height:1.1em; color:var(--pink);}
-  .ico.heart{width:1em; height:1em; color:var(--pink);}
-  .dog-badge{
-    flex:0 0 auto; width:76px; height:76px; color:var(--accent);
-    background:var(--accent-soft); border:2px solid var(--line); border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .dog-badge .ico{width:48px; height:48px; color:var(--accent);}
-  .dog-small{width:20px; height:20px; margin-right:6px; vertical-align:-4px; color:var(--accent);}
-
+  /* 页头：名字 + 线条小狗照片 */
   header{
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    display:flex; align-items:center; justify-content:space-between; gap:18px;
     border-bottom:2px dashed var(--line); padding-bottom:14px; margin-bottom:18px;
   }
   h1{margin:0 0 6px; font-size:26px; letter-spacing:2px;}
-  h1 .wave{color:var(--pink);}
   .sub{color:var(--accent); font-size:13.5px; font-weight:600;}
   .meta{margin-top:9px; font-size:12.5px; color:var(--muted);}
   .meta span{margin-right:14px; white-space:nowrap;}
+  .dog-photo{
+    flex:0 0 auto; width:96px; height:96px; border-radius:50%;
+    object-fit:cover; border:3px solid #fff; box-shadow:0 4px 14px rgba(15,23,42,.18);
+  }
 
   section{
     margin-bottom:16px; padding:14px 16px;
     border:1.5px solid var(--line); border-radius:16px; background:#fcfdff;
   }
-  h2{
-    display:flex; align-items:center;
-    font-size:15px; margin:0 0 10px; line-height:1.4;
-  }
+  h2{font-size:15px; margin:0 0 10px; line-height:1.4;}
   p{margin:0 0 9px; font-size:13.5px;}
   p:last-child{margin-bottom:0;}
   ul{margin:0; padding-left:20px; font-size:13.5px;}
@@ -90,13 +76,16 @@
     font-size:13.5px; color:#7a5a1f;
   }
 
-  .foot{
-    margin-top:18px; padding-top:12px; border-top:2px dashed var(--line);
-    color:var(--muted); font-size:11.5px; display:flex; align-items:center; gap:6px;
-  }
   .bye{
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    margin:14px 0 0; color:var(--muted); font-size:12px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    margin:16px 0 0; color:var(--muted); font-size:12px;
+  }
+  .bye img{width:44px; height:44px; border-radius:50%; object-fit:cover;
+    border:2px solid #fff; box-shadow:0 3px 10px rgba(15,23,42,.16);}
+
+  .foot{
+    margin-top:14px; padding-top:10px; border-top:2px dashed var(--line);
+    color:var(--muted); font-size:11.5px; line-height:1.7;
   }
   .hint{
     width:210mm; margin:0 auto 12px; padding:10px 14px; border-radius:12px;
@@ -114,61 +103,16 @@
 </head>
 <body>
 
-<!-- ===== 线条小狗图案（手写 SVG，不用外部图片） ===== -->
-<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-  <!-- 小狗脸 -->
-  <symbol id="s-dog" viewBox="0 0 100 100">
-    <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-      <!-- 耳朵：两个微微外张的椭圆，圆润可爱 -->
-      <ellipse cx="22" cy="43" rx="9" ry="14" transform="rotate(-18 22 43)"/>
-      <ellipse cx="78" cy="43" rx="9" ry="14" transform="rotate(18 78 43)"/>
-      <!-- 头 -->
-      <circle cx="50" cy="57" r="24"/>
-      <circle cx="41" cy="54" r="3.4" fill="currentColor" stroke="none"/>
-      <circle cx="59" cy="54" r="3.4" fill="currentColor" stroke="none"/>
-      <path d="M50 62c2.7 0 4.8 1.9 4.8 4.2S52.7 70 50 70s-4.8-1.5-4.8-3.8S47.3 62 50 62z" fill="currentColor" stroke="none"/>
-      <path d="M50 70v4"/>
-      <path d="M50 74c-2.4 3.4-6.4 3.4-8.6.8"/>
-      <path d="M50 74c2.4 3.4 6.4 3.4 8.6.8"/>
-    </g>
-  </symbol>
-  <!-- 爪印 -->
-  <symbol id="s-paw" viewBox="0 0 100 100">
-    <g fill="currentColor">
-      <ellipse cx="50" cy="64" rx="21" ry="17"/>
-      <ellipse cx="25" cy="41" rx="10" ry="12.5"/>
-      <ellipse cx="43" cy="30" rx="10" ry="12.5"/>
-      <ellipse cx="62" cy="30" rx="10" ry="12.5"/>
-      <ellipse cx="79" cy="42" rx="10" ry="12.5"/>
-    </g>
-  </symbol>
-  <!-- 骨头 -->
-  <symbol id="s-bone" viewBox="0 0 100 100">
-    <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round">
-      <path d="M32 50h36"/>
-      <circle cx="25" cy="41" r="9"/>
-      <circle cx="25" cy="59" r="9"/>
-      <circle cx="75" cy="41" r="9"/>
-      <circle cx="75" cy="59" r="9"/>
-    </g>
-  </symbol>
-  <!-- 爱心 -->
-  <symbol id="s-heart" viewBox="0 0 100 100">
-    <path d="M50 84C28 68 15 55 15 42c0-10 8-18 18-18 6 0 11 3 17 10 6-7 11-10 17-10 10 0 18 8 18 18 0 13-13 26-35 42z"
-          fill="currentColor"/>
-  </symbol>
-</svg>
-
 <div class="hint">
   🐶 打印方法：按 <b>Ctrl + P</b> → 打印机选「<b>另存为 PDF</b>」→ 点保存。
-  如果打印预览里没有底色，在打印窗口的「更多设置」里把「<b>背景图形</b>」打开就行。
+  如果预览里没有底色和照片，在打印窗口的「更多设置」里把「<b>背景图形</b>」打开。
 </div>
 
 <div class="paper">
 
   <header>
     <div>
-      <h1>陈一菲 <span class="wave">～</span></h1>
+      <h1>陈一菲 ～</h1>
       <div class="sub">广东工业大学 · 集成电路设计与集成系统创新班 · 想往数字 IC 的芯片验证方向走</div>
       <div class="meta">
         <span>📍 广东湛江</span>
@@ -177,13 +121,11 @@
         <span>🌐 chenyifei181.github.io/freshman-assessment</span>
       </div>
     </div>
-    <div class="dog-badge">
-      <svg class="ico" viewBox="0 0 100 100" role="img" aria-label="线条小狗"><use href="#s-dog"/></svg>
-    </div>
+    <img class="dog-photo" src="images/line-dog.jpg" alt="线条小狗">
   </header>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>先说说我是个什么样的人</h2>
+    <h2>🐾 先说说我是个什么样的人</h2>
     <p>
       我叫陈一菲，来自广东湛江，现在在广东工业大学读<strong>集成电路设计与集成系统创新班</strong>，大一。
       如果只能用一个特点介绍自己，我想说：<strong>我是一个对"发现问题"上瘾的人。</strong>
@@ -203,7 +145,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>为什么想往芯片验证走</h2>
+    <h2>🐾 为什么想往芯片验证走</h2>
     <div class="quote">
       我享受的不是"造出东西"的那一下，而是"把可能出错的地方一个个试出来"的过程。
     </div>
@@ -226,7 +168,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>接下来我想学的</h2>
+    <h2>🐾 接下来我想学的</h2>
     <ul>
       <li><strong>SystemVerilog</strong>：验证要靠它写测试平台，这是我下一步最想拿下的东西。</li>
       <li><strong>验证方法学（UVM）</strong>：等语法和数字电路学扎实了，我想往这个方向系统学。</li>
@@ -236,7 +178,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>生活里的我</h2>
+    <h2>🐾 生活里的我</h2>
     <ul>
       <li><strong>家乡湛江</strong>：一座靠海的城市，海鲜和糖水都是招牌。假期回家，吃这件事一定排在前面。</li>
       <li><strong>羽毛球与田径</strong>：羽毛球是每周的固定项目；高中在校运会上跳高拿过第二名，
@@ -248,7 +190,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>技能</h2>
+    <h2>🐾 技能</h2>
     <ul class="chips">
       <li>C 语言</li>
       <li>HTML / CSS</li>
@@ -261,7 +203,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>成绩与荣誉</h2>
+    <h2>🐾 成绩与荣誉</h2>
     <ul>
       <li>
         <strong>高考成绩</strong>：英语 135+；高中阶段曾考进年级前二十名；语文成绩一直比较好。
@@ -285,7 +227,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>学生工作</h2>
+    <h2>🐾 学生工作</h2>
     <ul>
       <li><strong>现在</strong>：大学班级团支书（2026.09 入学至今）</li>
       <li><strong>曾任</strong>：班长</li>
@@ -298,7 +240,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>这次考核我做出来的东西</h2>
+    <h2>🐾 这次考核我做出来的东西</h2>
     <table>
       <tr><th style="width:30%">作品</th><th>说明</th></tr>
       <tr>
@@ -319,7 +261,7 @@
   </section>
 
   <section>
-    <h2><svg class="ico paw" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-paw"/></svg>我是怎么做这些作品的</h2>
+    <h2>🐾 我是怎么做这些作品的</h2>
     <ul>
       <li>用 Git 管理版本，全部作品提交在自己的 GitHub 仓库里，能看出是一步步改出来的</li>
       <li>用 AI 编程工具生成初版，但每一段关键逻辑我都自己核对过、改过（提示词和迭代过程都记在 README 里）</li>
@@ -329,18 +271,24 @@
         我去查了 Git 官方文档，又在一个测试文件夹里亲手试了一次——结果是它会直接把未提交的修改丢掉，而且找不回来。
         这条「AI 说错了、我自己查证纠正」的完整过程我写进了 README。对我来说，查证的过程比结论更重要。
       </li>
+      <li>
+        <strong>还有一次是真的失败，但最后做成了</strong>：上传作品的时候，GitHub Desktop 反复弹出
+        <code>Failed to push</code>，报错写着 <code>Recv failure: Connection was reset</code>，连着试了三次都没成功。
+        我没有一直硬点，而是先把这句报错查清楚是什么意思（大概是上传过程中网络连接被中断了），
+        然后换了一个网络重新上传，就成功了。这件事让我记住两点：<strong>遇到报错先看懂它，再动手</strong>；
+        <strong>失败的时候换个条件再试，比原地重复有用</strong>。
+      </li>
     </ul>
   </section>
 
   <div class="bye">
-    <svg class="ico" viewBox="0 0 100 100" style="width:26px;height:26px" aria-hidden="true"><use href="#s-dog"/></svg>
+    <img src="images/line-dog.jpg" alt="线条小狗">
     <span>谢谢你看到这里，汪！</span>
-    <svg class="ico heart" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-heart"/></svg>
   </div>
 
   <div class="foot">
-    <svg class="ico bone" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-bone"/></svg>
-    <span>个人主页：chenyifei181.github.io/freshman-assessment ｜ 代码仓库：github.com/chenyifei181/freshman-assessment</span>
+    个人主页：chenyifei181.github.io/freshman-assessment ｜ 代码仓库：github.com/chenyifei181/freshman-assessment<br>
+    页头配图：线条小狗（网络图片，仅作个人作品的非商业使用）
   </div>
 
 </div>
