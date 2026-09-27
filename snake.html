@@ -98,6 +98,15 @@ canvas{
   background:rgba(47,158,104,.14); color:var(--snake-head);
   font-size:12px; font-weight:600;
 }
+
+.aibar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px; margin-top:10px; padding:7px 10px;
+  border:1px dashed var(--border); border-radius:10px;
+  font-size:12.5px; color:var(--muted);
+}
+.aibar b{color:var(--text);}
+#aiBadge{display:none;}
 </style>
 </head>
 <body>
@@ -112,7 +121,7 @@ canvas{
     <div class="stat"><span>得分</span><b id="score">0</b></div>
     <div class="stat"><span>最高分</span><b id="best">0</b></div>
     <div class="stat"><span>局数</span><b id="rounds">0</b></div>
-    <div class="stat"><span>AI 连吃</span><b id="aiStreak">0/15</b></div>
+    <div class="stat"><span>AI 最高连吃</span><b id="aiMax">0</b></div>
   </div>
 
   <canvas id="board" width="480" height="480"></canvas>
@@ -125,9 +134,14 @@ canvas{
     <button id="resetBtn">重置全部记录</button>
   </div>
 
+  <div class="aibar">
+    <span>AI 本局连吃：<b id="aiProgress">0 / 15</b></span>
+    <span class="badge" id="aiBadge">✅ 已达标（≥15）</span>
+  </div>
+
   <p class="tip">
     方向键 / WASD 控制方向，空格暂停<br>
-    <span class="badge">考核指标：AI 连续吃满 15 个食物不死</span>
+    考核指标：AI 连续吃满 15 个食物不死
   </p>
 
 </div>
@@ -152,14 +166,16 @@ const ctx = canvas.getContext('2d');
 const $score    = document.getElementById('score');
 const $best     = document.getElementById('best');
 const $rounds   = document.getElementById('rounds');
-const $aiStreak = document.getElementById('aiStreak');
+const $aiMax    = document.getElementById('aiMax');
+const $aiProgress = document.getElementById('aiProgress');
+const $aiBadge  = document.getElementById('aiBadge');
 const $aiBtn    = document.getElementById('aiBtn');
 
 /* ---------- 游戏状态 ---------- */
 let snake, dir, nextDir, food, score, alive, paused;
 let aiMode = false;        // 是否处于 AI 自动模式
 let aiStreak = 0;          // AI 连续吃到的食物数（撞死或被手动打断则清零）
-let aiBestStreak = 0;
+let aiMaxStreak = Number(localStorage.getItem('snake.aiMax') || 0);  // 历史最高纪录，会一直留着
 let speed = 130;           // 每步毫秒数，会随分数加快
 let timer = null;
 
@@ -223,7 +239,14 @@ function move(){
   snake.unshift(head);
   if(willEat){
     score += 10;
-    if(aiMode){ aiStreak++; aiBestStreak = Math.max(aiBestStreak, aiStreak); }
+    if(aiMode){
+      aiStreak++;
+      // 记录历史最高连吃数：即使这一局后来死了，纪录也不会丢
+      if(aiStreak > aiMaxStreak){
+        aiMaxStreak = aiStreak;
+        localStorage.setItem('snake.aiMax', aiMaxStreak);
+      }
+    }
     placeFood();
     // 越吃越快，但有下限
     const newSpeed = Math.max(70, 130 - Math.floor(score/50)*8);
@@ -443,7 +466,9 @@ function updateHud(){
   $score.textContent = score;
   $best.textContent = best;
   $rounds.textContent = rounds;
-  $aiStreak.textContent = aiStreak + '/' + WIN_STREAK;
+  $aiMax.textContent = aiMaxStreak;
+  $aiProgress.textContent = aiStreak + ' / ' + WIN_STREAK;
+  $aiBadge.style.display = aiMaxStreak >= WIN_STREAK ? 'inline-block' : 'none';
 }
 
 /* ---------- 键盘控制 ---------- */
@@ -481,9 +506,10 @@ $aiBtn.addEventListener('click', ()=>{
 document.getElementById('restartBtn').addEventListener('click', newGame);
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
-  best = 0; rounds = 0; aiBestStreak = 0;
+  best = 0; rounds = 0; aiMaxStreak = 0;
   localStorage.removeItem('snake.best');
   localStorage.removeItem('snake.rounds');
+  localStorage.removeItem('snake.aiMax');
   newGame();
 });
 
