@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈逸飞 · 个人主页</title>
+  <meta name="description" content="陈逸飞的个人主页：自我介绍、技能、作品与联系方式。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="avatar">陈</div>
+    <h1>陈逸飞</h1>
+    <p class="tagline">大一 · 电子信息类 · 喜欢把电路和代码都跑起来</p>
+    <nav class="nav">
+      <a href="#about">关于我</a>
+      <a href="#skills">技能</a>
+      <a href="#works">作品</a>
+      <a href="#contact">联系我</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="about" class="section">
+      <h2>关于我</h2>
+      <p>
+        我是陈逸飞，大一学生，对<strong>嵌入式开发</strong>和<strong>前端交互</strong>都很感兴趣。
+        平时喜欢把学到的理论动手做一遍：写电路仿真时会把每个公式手算一遍再和仿真结果对比，
+        做小游戏时会先想清楚需求再一步步实现。
+      </p>
+      <p>
+        这个网站是我用 HTML 和 CSS 手写的，代码放在
+        <a href="https://github.com/chenyifei181/freshman-assessment" target="_blank" rel="noopener">GitHub 仓库</a>
+        里，用 GitHub Pages 免费托管。
+      </p>
+    </section>
+
+    <section id="skills" class="section">
+      <h2>我会什么</h2>
+      <ul class="chips">
+        <li>C 语言</li>
+        <li>HTML / CSS</li>
+        <li>JavaScript 入门</li>
+        <li>Git 版本管理</li>
+        <li>电路仿真（PySpice / ngspice）</li>
+        <li>AI 辅助编程</li>
+      </ul>
+    </section>
+
+    <section id="works" class="section">
+      <h2>我的作品</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>贪吃蛇（含 AI 自动模式）</h3>
+          <p>纯前端单文件实现，双击就能玩。AI 模式可以自动寻路，连续吃满 15 个食物不撞墙、不撞自己。</p>
+        </article>
+        <article class="card">
+          <h3>PySpice 电路仿真</h3>
+          <p>RC 低通滤波、戴维南定理验证、NMOS 共源放大电路，每个电路都做了手算与仿真的对比。</p>
+        </article>
+        <article class="card">
+          <h3>个人网站</h3>
+          <p>就是你现在看到的这个页面，手写 HTML / CSS，部署在 GitHub Pages 上。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>联系我</h2>
+      <ul class="contact">
+        <li>邮箱：<a href="mailto:3227669497@qq.com">3227669497@qq.com</a></li>
+        <li>GitHub：<a href="https://github.com/chenyifei181" target="_blank" rel="noopener">github.com/chenyifei181</a></li>
+        <li>个人网站：<a href="https://chenyifei181.github.io/freshman-assessment/" target="_blank" rel="noopener">chenyifei181.github.io/freshman-assessment</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 陈逸飞 · 手写 HTML / CSS · 托管于 GitHub Pages</p>
+  </footer>
+
+</body>
+</html>

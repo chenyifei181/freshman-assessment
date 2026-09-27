@@ -1,0 +1,192 @@
+/* ===== 主题变量：改这里就能一键换配色 ===== */
+:root {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #1f2328;
+  --muted: #6b7280;
+  --accent: #2f6feb;
+  --accent-soft: #e8f0fe;
+  --border: #e5e7eb;
+  --shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Microsoft YaHei", "PingFang SC", system-ui, -apple-system, sans-serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== 顶部区域 ===== */
+.hero {
+  padding: 72px 24px 48px;
+  text-align: center;
+  background:
+    radial-gradient(1000px 400px at 50% -120px, rgba(47, 111, 235, 0.18), transparent 70%),
+    linear-gradient(180deg, #ffffff, var(--bg));
+  border-bottom: 1px solid var(--border);
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #2f6feb, #6ea8fe);
+  box-shadow: var(--shadow);
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: 34px;
+  letter-spacing: 1px;
+}
+
+.tagline {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.nav a {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.nav a:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+/* ===== 内容区 ===== */
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 8px 24px 64px;
+}
+
+.section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 30px;
+  margin-top: 28px;
+}
+
+.section h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+  line-height: 1.4;
+}
+
+.section p { margin: 0 0 12px; }
+.section p:last-child { margin-bottom: 0; }
+
+/* ===== 技能标签 ===== */
+.chips {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chips li {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: #1d4ed8;
+  font-size: 14px;
+}
+
+/* ===== 作品卡片 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  background: #fcfdff;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ===== 联系方式 ===== */
+.contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact li { margin-bottom: 6px; }
+
+/* ===== 页脚 ===== */
+.footer {
+  text-align: center;
+  padding: 28px 24px 40px;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+
+.footer p { margin: 0; }
+
+/* ===== 小屏幕适配 ===== */
+@media (max-width: 600px) {
+  .hero { padding: 52px 18px 36px; }
+  .hero h1 { font-size: 27px; }
+  .section { padding: 22px 20px; }
+  main { padding: 0 16px 48px; }
+}
