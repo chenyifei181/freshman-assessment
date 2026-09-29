@@ -29,7 +29,7 @@
     box-shadow:0 10px 40px rgba(15,23,42,.10);
   }
 
-  /* 页头：名字 + 线条小狗照片 */
+  /* 页头：名字 + 照片 */
   header{
     display:flex; align-items:center; justify-content:space-between; gap:18px;
     border-bottom:2px dashed var(--line); padding-bottom:14px; margin-bottom:18px;
@@ -76,6 +76,29 @@
     font-size:13.5px; color:#7a5a1f;
   }
 
+  /* ===== 生活碎片：照片墙 ===== */
+  .banner{
+    display:block; width:100%; height:auto; margin:4px 0 12px;
+    border-radius:14px; border:1.5px solid var(--line); object-fit:cover;
+  }
+  .gallery{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:2px 0 12px;
+    grid-auto-flow:dense;
+  }
+  .gallery figure{
+    margin:0; border:1.5px solid var(--line); border-radius:12px;
+    overflow:hidden; background:#fff;
+  }
+  .gallery img{
+    display:block; width:100%; height:auto; aspect-ratio:1/1; object-fit:cover;
+  }
+  .gallery figure.wide{grid-column:span 2;}
+  .gallery figure.wide img{aspect-ratio:2/1;}
+  .gallery figcaption{
+    padding:5px 8px 7px; font-size:11px; line-height:1.5; color:var(--muted);
+  }
+  .gallery figcaption b{color:var(--accent); font-weight:600;}
+
   .bye{
     display:flex; align-items:center; justify-content:center; gap:10px;
     margin:16px 0 0; color:var(--muted); font-size:12px;
@@ -98,6 +121,8 @@
     .hint{display:none;}
     h2{break-after:avoid; page-break-after:avoid;}
     ul,table,.quote,section{break-inside:avoid; page-break-inside:avoid;}
+    .banner,.gallery figure,.bye{break-inside:avoid; page-break-inside:avoid;}
+    .gallery{break-inside:auto;}
   }
 </style>
 </head>
@@ -121,7 +146,7 @@
         <span>🌐 chenyifei181.github.io/freshman-assessment</span>
       </div>
     </div>
-    <img class="dog-photo" src="images/line-dog.jpg" alt="线条小狗">
+    <img class="dog-photo" src="images/life/life-avatar.jpg" alt="陈一菲">
   </header>
 
   <section>
@@ -141,6 +166,9 @@
       同时我很外向、开朗活泼，喜欢和人打交道，团队里有事我很少等着别人先开口。
       抗压能力还不错，心态也比较稳，不会因为一时做不出来就急。交给我的事我会负责到底，
       而且总想把它做到最好。
+    </p>
+    <p>
+      这些性格不是凭空来的，下面这一页照片大概能说明白它们是从哪长出来的。
     </p>
   </section>
 
@@ -178,15 +206,78 @@
   </section>
 
   <section>
-    <h2>🐾 生活里的我</h2>
-    <ul>
-      <li><strong>家乡湛江</strong>：一座靠海的城市，海鲜和糖水都是招牌。假期回家，吃这件事一定排在前面。</li>
-      <li><strong>羽毛球与田径</strong>：羽毛球是每周的固定项目；高中在校运会上跳高拿过第二名，
-        也跑过 4×100 米接力。喜欢那种拼反应、拼体力，还要和队友配合上的痛快感。</li>
-      <li><strong>书法</strong>：练字的时候心会静下来，有点像调电路时的状态——急不得，一笔一笔来。</li>
-      <li><strong>看书 / 写随笔</strong>：看完总想写点什么，备忘录里攒了不少碎碎念，算是我自己的思考存档。</li>
-      <li><strong>旅游和美食</strong>：到一座城市先找当地小吃，边吃边拍照记录。喜欢热闹的烟火气，也喜欢认识不同的人。</li>
-    </ul>
+    <h2>🐾 生活碎片：照片里的我</h2>
+    <p>
+      简历上的我只有几行字，但真实的我，大部分时间都花在下面这些事情上。
+      如果有一天在图书馆找不到我，我大概在做三件事之一：
+      <strong>在球场上、在练字、或者在去下一座城市的路上。</strong>
+    </p>
+    <p>
+      我喜欢把生活拍下来。不是为了发朋友圈，而是因为过一阵子再回头看，
+      当时的光线、吃到的味道、和谁待在一起，都会一下子回来。
+      老家<strong>湛江</strong>是一座靠海的城市，海鲜和糖水都很有名，假期回家吃这件事一定排在第一位；
+      羽毛球是我从高中打到现在、唯一没有断过的爱好；练书法的时候心会静下来，
+      有点像调电路——急不得，一笔一笔来；看完书总想写点什么，备忘录里攒了一堆碎碎念。
+    </p>
+
+    <img class="banner" src="images/life/life-sky-banner.jpg" alt="旅途中拍到的天空与山脉">
+
+    <div class="gallery">
+      <figure>
+        <img src="images/life/life-calligraphy.jpg" alt="手写的书法长卷">
+        <figcaption><b>书法</b>：这幅长卷是一笔一笔写下来的</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-lake-dress.jpg" alt="湖边的背影">
+        <figcaption><b>旅行</b>：假期的第一件事就是往外走</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-blue-lake.jpg" alt="蓝色的湖水">
+        <figcaption><b>旅行</b>：湖水蓝得有点不像真的</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-shangrila-mural.jpg" alt="藏式彩绘墙">
+        <figcaption><b>旅行</b>：香格里拉路边的藏式彩绘</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-macau-street.jpg" alt="澳门街景与蛋挞">
+        <figcaption><b>旅行</b>：到一座城，先找当地小吃</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-watertown.jpg" alt="江南水乡">
+        <figcaption><b>旅行</b>：白墙黛瓦，水边的午后</figcaption>
+      </figure>
+      <figure class="wide">
+        <img src="images/life/life-badminton.jpg" alt="羽毛球拍与羽毛球">
+        <figcaption><b>羽毛球</b>：每周固定要去的地方，球拍和球是随身装备</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-with-brother.jpg" alt="和弟弟的合影">
+        <figcaption><b>家人</b>：和弟弟的合影</figcaption>
+      </figure>
+      <figure class="wide">
+        <img src="images/life/life-lake-bench.jpg" alt="湖边长椅上坐着的人">
+        <figcaption><b>旅行</b>：在湖边坐了一整个下午，什么都没做</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-macau-canal.jpg" alt="商场里的运河">
+        <figcaption><b>旅行</b>：把整条运河搬进了商场</figcaption>
+      </figure>
+      <figure class="wide">
+        <img src="images/life/life-wetland.jpg" alt="草原与湿地">
+        <figcaption><b>旅行</b>：高原上的风、湿地和很远的山</figcaption>
+      </figure>
+      <figure>
+        <img src="images/life/life-badminton-court.jpg" alt="羽毛球馆">
+        <figcaption><b>羽毛球</b>：打完之后，地上躺着一堆打秃的球</figcaption>
+      </figure>
+    </div>
+
+    <p>
+      这些照片大多是自己随手拍的，不太讲究构图，但每一张我都能想起当时在做什么。
+      <strong>喜欢往外走，也喜欢把日子记下来</strong>——这大概就是我做作品的耐心、
+      想问题的细致、以及遇到难事不撒手的来源。
+    </p>
   </section>
 
   <section>
@@ -289,7 +380,7 @@
 
   <div class="foot">
     个人主页：chenyifei181.github.io/freshman-assessment ｜ 代码仓库：github.com/chenyifei181/freshman-assessment<br>
-    页头配图：线条小狗（网络图片，仅作个人作品的非商业使用）
+    页头与「生活碎片」照片均为本人拍摄或本人照片（仅用于个人作品的非商业使用）；页脚配图：线条小狗（网络图片）。
   </div>
 
 </div>

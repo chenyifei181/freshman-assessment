@@ -11,8 +11,11 @@
 | 个人网站 | `index.html`、`style.css` | 手写 HTML / CSS，托管在 GitHub Pages |
 | 贪吃蛇小游戏 | `snake.html` | 单文件实现，含 AI 自动模式（阶段一 + 阶段二） |
 | PySpice 电路仿真 | `circuit_rc.py`、`circuit_thevenin.py`、`circuit_mos.py` | RC 滤波、戴维南定理、NMOS 共源放大 |
-| 个人简介 PDF | `个人简介.pdf` | 姓名、专业、兴趣、联系方式（源文件 `resume.html`，用浏览器打印成 PDF） |
+| 个人简介 PDF | `个人简介.pdf` | 姓名、专业、兴趣、联系方式，以及「生活碎片」照片墙（源文件 `resume.html`，用浏览器打印成 PDF） |
+| 生活照片 | `images/life/` | 个人简介里用到的日常照片：旅行、羽毛球、书法、美食与家人 |
 | 许可证 | `LICENSE` | MIT |
+
+> 照片说明：`images/life/` 里的照片都是我自己拍的或本人出镜，只用于这份个人作品的非商业展示。
 
 ## 二、网站地址
 
@@ -153,6 +156,7 @@ NMOS：K = 0.8 mA/V²，V_th = 1 V，λ = 0.02 /V；输入 Vi = 10 mV / 1 kHz �
 - [x] 创建仓库并完成首次提交
 - [x] 个人网站上线
 - [x] 个人简介 PDF（用 `resume.html` 打印）
+- [x] 个人简介加入「生活碎片」照片墙（旅行 / 羽毛球 / 书法 / 美食，共 12 张）
 - [x] LICENSE
 - [ ] 两步验证（2FA）
 - [x] 小游戏阶段一（能自己玩）

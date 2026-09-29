@@ -52,6 +52,13 @@ a:hover { text-decoration: underline; }
   box-shadow: var(--shadow);
 }
 
+/* 头像改成照片时用这条 */
+img.avatar {
+  display: block;
+  object-fit: cover;
+  border: 3px solid #fff;
+}
+
 .hero h1 {
   margin: 0 0 8px;
   font-size: 34px;
@@ -117,7 +124,7 @@ main {
 .chips {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -163,6 +170,58 @@ main {
   color: var(--muted);
 }
 
+/* ===== 生活照片墙 ===== */
+.banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 4px 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin: 0 0 16px;
+  grid-auto-flow: dense;
+}
+
+.gallery figure {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  transition: 0.2s;
+}
+
+.gallery figure:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #eef1f8;
+}
+
+.gallery figure.wide { grid-column: span 2; }
+.gallery figure.wide img { aspect-ratio: 2 / 1; }
+
+.gallery figcaption {
+  padding: 8px 10px 10px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.gallery figcaption b { color: var(--accent); font-weight: 600; }
+
 /* ===== 联系方式 ===== */
 .contact {
   list-style: none;
@@ -189,4 +248,5 @@ main {
   .hero h1 { font-size: 27px; }
   .section { padding: 22px 20px; }
   main { padding: 0 16px 48px; }
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 }
