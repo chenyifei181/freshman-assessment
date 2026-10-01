@@ -109,6 +109,18 @@ def setup_ngspice():
 
 NGSPICE_OK = setup_ngspice()
 
+if not NGSPICE_OK:
+    print()
+    print('=' * 62)
+    print('  没有检测到 ngspice 计算内核，暂时无法运行真实电路仿真')
+    print('=' * 62)
+    print('  PySpice 只是 Python 的调用层，真正做电路计算的是 ngspice 内核。')
+    print('  安装方法见 README 的「怎么运行」一节；装好之后重新运行本脚本，')
+    print('  就会打印仿真结果，并重新生成 figures 目录里的波形图。')
+    print()
+    print('  这个电路的手算过程和「手算 vs 仿真」对比表已经写在 README 里。')
+    raise SystemExit(0)
+
 
 def wave(analysis, node):
     return np.asarray(analysis[node]).ravel()
